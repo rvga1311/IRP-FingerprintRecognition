@@ -26,6 +26,8 @@ Todos los archivos de codigo fuente usados para este proyecto están bajo la lin
 
 Copyright (C) 2022  Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr"
 
+  [Licencia](https://github.com/rvga1311/IRP-FingerprintRecognition/blob/main/LICENSE). 
+
 # Datos
 El sistema fue desarrollado en Python 3.10.5 y utiliza la libreria OpenCV para el procesamiento de imagenes y la libreria tkinter para la interfaz grafica.
 
@@ -41,4 +43,4 @@ El sistema fue desarrollado en Python 3.10.5 y utiliza la libreria OpenCV para e
 + Biblioteca ```time``` para el manejo de tiempo en la interfaz grafica; más especificamente para el uso de la función ```sleep``` para animar la barra de progreso.
 
 ## Nota importante
-El sistema fue desarrollado en Windows 11. La función ```os.system("start COPYING")``` fue utilizada para abrir los archivos COPYING  en el sistema operativo Windows. En caso de que el sistema sea ejecutado en otros sistemas operativos, se recomienda cambiar esta función el comando correspondiente que permita abrir un archivo de texto en un visualizador de texto externo, teniendo que ejemplares como Okular (en cuyo caso el comando seria ```os.system("okular COPYING")```). Dicho reemplazo debe ser realizado en el archivo ```main.py``` en la linea 160 dentro de la función declarada como ```openLicense()```.
+El sistema fue desarrollado en Windows 11. La función ```os.system("start LICENSE")``` fue utilizada para abrir el archivo LICENSE  en el sistema operativo Windows. En caso de que el sistema sea ejecutado en otros sistemas operativos, se recomienda cambiar esta función el comando correspondiente que permita abrir un archivo de texto en un visualizador de texto externo, teniendo que ejemplares como Okular (en cuyo caso el comando seria ```os.system("okular LICENSE")```). Dicho reemplazo debe ser realizado en el archivo ```main.py``` en la linea 160 dentro de la función declarada como ```openLicense()```.
