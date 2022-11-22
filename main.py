@@ -157,7 +157,7 @@ def exitAbout():
 
 
 def openLicense():
-    os.system("start COPYING")
+    os.system("start LICENSE")
 
 # Renderizacion de componentes de "Acerca de"
 # En esta funcion se renderiza informacion acerca del proyecto
