@@ -26,7 +26,7 @@ Todos los archivos de codigo fuente usados para este proyecto están bajo la lin
 
 Copyright (C) 2022  Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr"
 
-  [Licencia](https://github.com/rvga1311/IRP-FingerprintRecognition/blob/main/LICENSE). 
+[Licencia](https://github.com/rvga1311/IRP-FingerprintRecognition/blob/main/LICENSE)
 
 # Datos
 El sistema fue desarrollado en Python 3.10.5 y utiliza la libreria OpenCV para el procesamiento de imagenes y la libreria tkinter para la interfaz grafica.
