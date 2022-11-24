@@ -38,7 +38,6 @@ El sistema fue desarrollado en Python 3.10.5 y utiliza la libreria OpenCV para e
 + Biblioteca ```numpy``` para el manejo de matrices (formato en el que las imagenes son almacenadas).
 + Biblioteca ```os``` para el manejo de archivos y carpetas.
 + Biblioteca ```shutil``` como complemento para el manejo de archivos y carpetas.
-+ Biblioteca ```math``` para el uso de funciones ```atan2``` y ```degrees```  utilizadas para la alineación de las hojas de usuarios.
 + Bilioteca ```PIL``` para el manejo y renderización de imagenes en la interfaz grafica.
 + Biblioteca ```time``` para el manejo de tiempo en la interfaz grafica; más especificamente para el uso de la función ```sleep``` para animar la barra de progreso.
 

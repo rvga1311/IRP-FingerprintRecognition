@@ -52,7 +52,7 @@ def fingerprintRecognition(imgToRecognize, imgToCompare):
         cv2.DescriptorMatcher_FLANNBASED)
     matchesResult = flannMatcher.knnMatch(descriptorsImg1, imgToCompare[0], 2)
 
-    ratio = 0.5
+    ratio = 0.8
     matchPoints = []
     for i, j in matchesResult:
         if i.distance < ratio * j.distance:
@@ -86,7 +86,7 @@ def FingerprintMatch(file):
             bestMatch = score
             recognizedUser = users.split('_')[0]
 
-    if recognizedUser is None and bestMatch < 80:
+    if recognizedUser is None and bestMatch < 90:
         return ""
     else:
         return recognizedUser

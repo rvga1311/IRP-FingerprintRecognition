@@ -33,31 +33,13 @@ import cv2
 import numpy as np
 import os
 import shutil
-from math import atan2, degrees
 
 margin = 20
 
-# Funcion para binarizar la imagen original de cada especimen de usuario
-def filters(img):
-    _, img = cv2.threshold(img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
-    return img
-
-# Función para obtener el ángulo entre dos puntos
-def get_angle(point_1, point_2):
-    angle = atan2(point_1[0] - point_2[0], point_1[1] - point_2[1])
-    return degrees(angle)
-
-# Función para alinear la imagen
-def alignAux(img, point1, point2):
-    angle = get_angle(point2, point1)
-    rows, cols = img.shape[:2]
-    M = cv2.getRotationMatrix2D((cols//2, rows//2), angle, 1)
-    dst = cv2.warpAffine(img, M, (cols, rows),
-                         borderMode=cv2.BORDER_CONSTANT, borderValue=(255))
-    return dst
-
 # Función para obtener los puntos de la parte izquierda de la cuadricula de la hoja de usuario recolectada
 # empezando de abajo hacia arriba
+
+
 def getPointLeft(img, stroke=0, height=None):
     if height == None:
         height, width = img.shape[:2]
@@ -77,6 +59,8 @@ def getPointLeft(img, stroke=0, height=None):
 
 # Función para obtener los puntos de la parte derecha de la cuadricula de la hoja de usuario recolectada
 # empezando de abajo hacia arriba
+
+
 def getPointRight(img, stroke=0, height=None):
     if height == None:
         height, width = img.shape[:2]
@@ -96,6 +80,8 @@ def getPointRight(img, stroke=0, height=None):
 
 # Función para obtener los puntos de la parte superior de la cuadricula de la hoja de usuario recolectada
 # empezando de la izquierda hacia la derecha
+
+
 def getPointTop(img, startPoint, stroke=0):
     points = []
     while not (img[startPoint[0]][startPoint[1]] == 0):
@@ -106,42 +92,9 @@ def getPointTop(img, startPoint, stroke=0):
                 break
     return min(points, key=lambda x: x[0], default=None)
 
-# Función que utliza las funciones anteriores para marcar en la imagen los puntos de la cuadricula
-# que señalan el inicio y fin de la cuadricula
-def align(img, file):
-
-    height, width = img.shape[:2]
-
-    gray = cv2.bitwise_not(img)
-    bw = cv2.adaptiveThreshold(gray, 255, cv2.ADAPTIVE_THRESH_MEAN_C,
-                               cv2.THRESH_BINARY, 15, -2)
-
-    horizontal = np.copy(bw)
-
-    cols = horizontal.shape[1]
-    horizontal_size = cols // 30
-
-    horizontalStructure = cv2.getStructuringElement(
-        cv2.MORPH_RECT, (horizontal_size, 1))
-
-    horizontal = cv2.erode(horizontal, horizontalStructure)
-    horizontal = cv2.dilate(horizontal, horizontalStructure)
-
-    point1 = getPointLeft(horizontal)
-    point2 = getPointRight(horizontal)
-
-    while (point2[1]-point1[1] > width*0.9) or (point1[0]+100 < point2[0] or point2[0]+100 < point1[0]):
-        horizontal = horizontal[0:point2[0]-10, 0:width]
-        point1 = getPointLeft(horizontal)
-        point2 = getPointRight(horizontal)
-
-    img = alignAux(img, point1, point2)
-
-    img = img[margin:height-margin, margin:width-margin]
-
-    return img
-
 # Funcion que extrae las lineas verticales de la imagen que forman una cuadricula
+
+
 def getVerticals(gray):
 
     gray = cv2.bitwise_not(gray)
@@ -162,6 +115,8 @@ def getVerticals(gray):
     return vertical
 
 # Funcion que extrae las lineas horizontales de la imagen que forman una cuadricula
+
+
 def getRects(verticals, file):
     stroke = 0
     rectList = []
@@ -181,6 +136,8 @@ def getRects(verticals, file):
 
 # Funcion que extrae y recorta por separado cada espacio de la imagen de la hoja de usuario recolectada
 # segun los datos extraidos de las funciones anteriores
+
+
 def crop_image(img: np.array, x1, x2, y1, y2, name):
     varName = 1
     distanceX = (x2 - x1)//6
@@ -199,8 +156,11 @@ def crop_image(img: np.array, x1, x2, y1, y2, name):
             varName += 1
 
 # Funcion que crea las carpetas donde se guardaran las imagenes de las hojas de usuarios recolectadas
+
+
 def makeFolders():
-    folderlist = ["Abiel", "Elias", "Fabian", "Roy"] # Lista de nombres de las carpetas a crear (cada carpeta corresponde a una persona de la lista)
+    # Lista de nombres de las carpetas a crear (cada carpeta corresponde a una persona de la lista)
+    folderlist = ["Abiel", "Elias", "Fabian", "Roy"]
     if not os.path.exists("fingerprints2"):
         os.mkdir("fingerprints2")
 
@@ -210,6 +170,7 @@ def makeFolders():
         else:
             shutil.rmtree("fingerprints2/"+person)
             os.mkdir("fingerprints2/"+person)
+
 
 # Main del programa que se encarga de llamar a las funciones anteriores
 # y guardar las imagenes de las hojas de usuarios recolectadas
@@ -225,7 +186,8 @@ if __name__ == "__main__":
 
         img = cv2.imread(f"{folder}/" + file)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        img = filters(img)
+        _, img = cv2.threshold(
+            img, 0, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)
 
         print(f"Procesando: {file}")
         gray = img
@@ -241,5 +203,4 @@ if __name__ == "__main__":
 
             pathSide = f"{file.split('.')[0]}/{pathSide}"
             crop_image(gray, rectList[i][0][1], rectList[i][1][1],
-                          rectList[i][0][0], rectList[i][2][0], pathSide)
-
+                       rectList[i][0][0], rectList[i][2][0], pathSide)
