@@ -13,9 +13,9 @@
 
     Copyright (C) 2022  Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr 
 
-    Ultima modificacion: 2022-11-21
+    Ultima modificacion: 2022-11-24
     Responsables: Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr 
-    Resumen: Creacion de la interfaz grafica para el sistema de reconocimiento de huellas dactilares.
+    Resumen: Creacion de la interfaz grafica para el sistema de reconocimiento de huellas dactilares. Limpieza de codigo.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -78,9 +78,6 @@ def toggle_state(*_):
         registerUser['state'] = 'disabled'
         registerUser['bg'] = '#0b2247'
 
-# Renderizacion de componentes en caso que se quiera registrar un usuario
-# Se pide el nombre del usuario y se habilita el boton de registro el cual llama a la funcion registerUserAction
-
 
 def registerGUI():
     welcomeLabel.pack_forget()
@@ -96,8 +93,6 @@ def registerGUI():
     userName['textvariable'] = userName.var
     userName.var.trace_add('write', toggle_state)
 
-# Funcion para registrar un usuario usando funciones de fingerprint.py
-
 
 def registerUserAction():
     name = userName.get()
@@ -108,10 +103,6 @@ def registerUserAction():
     registerUser.pack_forget()
     userName.pack_forget()
     infoLabel.pack_forget()
-
-# Renderizacion de componentes en caso que se quiera identificar un usuario
-# Se carga una imagen y se usa la funcion FingerprintMatch para identificar al usuario
-# Se muestra en pantalla si el usuario ha sido reconocido o no
 
 
 def login():

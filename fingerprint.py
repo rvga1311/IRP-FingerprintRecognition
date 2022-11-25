@@ -12,9 +12,9 @@
     que se usaron durante la realizacion de este proyecto.
 
 
-    Ultima modificacion: 2022-11-21
+    Ultima modificacion: 2022-11-24
     Responsables: Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr  & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr 
-    Resumen: Creacion del codigo para el reconocimiento de huellas digitales usando SIFT y FLANN de openCV
+    Resumen: Creacion del codigo para el reconocimiento de huellas digitales usando SIFT y FLANN de openCV. Limpieza de codigo.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -34,22 +34,15 @@ import cv2
 import numpy as np
 import os
 
-# Función que recibe una  imágen y los descriptores de una huella digital extraida con anterioridad
-# Se calcula los puntos de interés y descriptores de la imágen a reconocer
-# Se crea un matcher de flann para obtener los vecinos cercanos
-# Se calcula el porcentaje de coincidencias entre los descriptores de la imágen a reconocer y los descriptores de la huella digital
-# Se retorna el porcentaje de coincidencias
-
 
 def fingerprintRecognition(imgToRecognize, imgToCompare):
     sift = cv2.SIFT_create()
 
-    keyPointsImg1, descriptorsImg1 = sift.detectAndCompute(imgToRecognize, None)
-    # keyPointsImg1 = sift.detect(imgToRecognize, None)
-    # keyPointsImg1, descriptorsImg1 = sift.compute(
-    #     imgToRecognize, keyPointsImg1)
+    keyPointsImg1, descriptorsImg1 = sift.detectAndCompute(
+        imgToRecognize, None)
 
-    matchesResult = cv2.FlannBasedMatcher(dict(algorithm=1, trees=10), {}).knnMatch(descriptorsImg1, imgToCompare[0], k=2)
+    matchesResult = cv2.FlannBasedMatcher(dict(algorithm=1, trees=10), {}).knnMatch(
+        descriptorsImg1, imgToCompare[0], k=2)
 
     ratio = 0.7
     matchPoints = []
@@ -59,12 +52,6 @@ def fingerprintRecognition(imgToRecognize, imgToCompare):
 
     minKeyPoints = min(len(keyPointsImg1), imgToCompare[1])
     return len(matchPoints) / minKeyPoints * 100
-
-# Función que recibe la ruta de una imagen
-# Se lee la imagen
-# Se itera sobre cada archivo txt que contiende descriptroes de huellas digitales guardadas
-# Se calcula el porcentaje de coincidencias entre la imágen a reconocer y cada huella digital, buscando el mayor porcentaje
-# Se retorna el nombre del usuario con el mayor porcentaje de coincidencias
 
 
 def FingerprintMatch(file):
@@ -88,13 +75,6 @@ def FingerprintMatch(file):
     if bestMatch >= 50:
         return recognizedUser
 
-# Función que recibe el nombre de un usuario y la ruta de una imagen
-# Se crea un directorio llamado fingerprints si no existe
-# Se lee la imagen
-# Se calculan los puntos de interés y descriptores de la imágen
-# Se guardan los descriptores en un archivo txt con el nombre del usuario y la cantidad de puntos de interés
-# Dentro del archivo txt se guardan los descriptores de la huella digital
-
 
 def createUser(name, fileFingerprint):
     if not os.path.exists(f'fingerprints'):
@@ -104,6 +84,4 @@ def createUser(name, fileFingerprint):
 
     sift = cv2.SIFT_create()
     keyPointsImg, descriptorsImg = sift.detectAndCompute(img, None)
-    # keyPointsImg, descriptorsImg = sift.compute(img, keyPointsImg)
-
     np.savetxt(f'fingerprints/{name}_{len(keyPointsImg)}.txt', descriptorsImg)

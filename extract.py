@@ -11,9 +11,9 @@
 
     Copyright (C) 2022  Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr 
 
-    Ultima modificacion: 2022-11-21
+    Ultima modificacion: 2022-11-24
     Responsables: Roy Garcia Alvarado - rvga1311@estudiantec.cr & Abiel Porras Garro - abielpg@estudiantec.cr & Elias Castro Montero - eliasc5@estudiantec.cr & Fabián Rojas Arguedas - fabian.sajor26@estudiantec.cr 
-    Resumen: Creacion del codigo para la extraccion de los especimenes de una huella digital por cada hoja de usuario recolectada
+    Resumen: Creacion del codigo para la extraccion de los especimenes de una huella digital por cada hoja de usuario recolectada. Limpieza de codigo.
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -36,9 +36,6 @@ import shutil
 
 margin = 20
 
-# Función para obtener los puntos de la parte izquierda de la cuadricula de la hoja de usuario recolectada
-# empezando de abajo hacia arriba
-
 
 def getPointLeft(img, stroke=0, height=None):
     if height == None:
@@ -56,9 +53,6 @@ def getPointLeft(img, stroke=0, height=None):
                 break
     point = min(points, key=lambda x: x[1], default=None)
     return [point[0]-stroke, point[1]+stroke]
-
-# Función para obtener los puntos de la parte derecha de la cuadricula de la hoja de usuario recolectada
-# empezando de abajo hacia arriba
 
 
 def getPointRight(img, stroke=0, height=None):
@@ -78,9 +72,6 @@ def getPointRight(img, stroke=0, height=None):
     point = max(points, key=lambda x: x[1], default=None)
     return [point[0]-stroke, point[1]-stroke]
 
-# Función para obtener los puntos de la parte superior de la cuadricula de la hoja de usuario recolectada
-# empezando de la izquierda hacia la derecha
-
 
 def getPointTop(img, startPoint, stroke=0):
     points = []
@@ -91,8 +82,6 @@ def getPointTop(img, startPoint, stroke=0):
                 startPoint[1] += 1
                 break
     return min(points, key=lambda x: x[0], default=None)
-
-# Funcion que extrae las lineas verticales de la imagen que forman una cuadricula
 
 
 def getVerticals(gray):
@@ -114,8 +103,6 @@ def getVerticals(gray):
 
     return vertical
 
-# Funcion que extrae las lineas horizontales de la imagen que forman una cuadricula
-
 
 def getRects(verticals, file):
     stroke = 0
@@ -133,9 +120,6 @@ def getRects(verticals, file):
         heightPoint = startLeftPoint[0]-topLenght-5
 
     return rectList
-
-# Funcion que extrae y recorta por separado cada espacio de la imagen de la hoja de usuario recolectada
-# segun los datos extraidos de las funciones anteriores
 
 
 def crop_image(img: np.array, x1, x2, y1, y2, name):
@@ -155,8 +139,6 @@ def crop_image(img: np.array, x1, x2, y1, y2, name):
             cv2.imwrite(f"fingerprints2/{name}_{varName}.png", crop)
             varName += 1
 
-# Funcion que crea las carpetas donde se guardaran las imagenes de las hojas de usuarios recolectadas
-
 
 def makeFolders():
     # Lista de nombres de las carpetas a crear (cada carpeta corresponde a una persona de la lista)
@@ -172,12 +154,6 @@ def makeFolders():
             os.mkdir("fingerprints2/"+person)
 
 
-# Main del programa que se encarga de llamar a las funciones anteriores
-# y guardar las imagenes de las hojas de usuarios recolectadas
-# en las carpetas correspondientes
-# se debe cambiar el nombre de la carpeta donde se encuentran las hojas de usuario recolectadas
-# Las hojas de usuario recolectadas deben estar en formato .png. Para este caso se utilizo una hoja con 2 tablas de 6x2 por usuario
-# Este codigo está elaborado para extaer especimenes bajo el formato de la hoja de usuario anteriormente mencionada
 if __name__ == "__main__":
     rectList = []
     makeFolders()
