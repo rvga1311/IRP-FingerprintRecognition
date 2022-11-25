@@ -52,6 +52,7 @@ window.resizable(False, False)
 
 def progress():
     Progress_Bar.pack(pady=spacing, side=TOP)
+    menu_frame.update()
     Progress_Bar['value'] = 20
     menu_frame.update_idletasks()
     time.sleep(1)
@@ -114,6 +115,7 @@ def registerUserAction():
 
 
 def login():
+    global filename
     userName.delete(0, 'end')
     registerUser.pack_forget()
     userName.pack_forget()
@@ -122,29 +124,28 @@ def login():
 
     filename = filedialog.askopenfilename(
         title="Abrir", filetypes=[("Imagen", "*.jpg *.jpeg *.png")])
-    img = Image.open(filename)
-    img = img.resize((326//2, 444//2))
-    img = ImageTk.PhotoImage(img)
-    imgLabel = Label(menu_frame, image=img)
-    imgLabel.pack()
-    progress()
 
-    user = FingerprintMatch(filename)
+    if filename != None or filename != "":
+        img = Image.open(filename)
+        img = img.resize((326//2, 444//2))
+        img = ImageTk.PhotoImage(img)
+        imgLabel["image"] = img
+        imgLabel.pack()
+        menu_frame.update()
 
-    while Progress_Bar['value'] < 100:
-        continue
+        progress()
+        while Progress_Bar['value'] < 80:
+            continue
+        user = FingerprintMatch(filename)
+        if user == "" or user == None:
+            text = "No se ha podido identificar al usuario"
+        else:
+            text = f"Usuario identificado: {user}"
 
-    Progress_Bar.pack_forget()
-    loading.pack_forget()
-    imgLabel.pack_forget()
-
-    if user == "":
-        text = "No se ha podido identificar al usuario"
-    else:
-        text = f"Usuario identificado: {user}"
-
-    welcomeLabel['text'] = text
-    welcomeLabel.pack(pady=spacing+20, side=TOP)
+        welcomeLabel['text'] = text
+        welcomeLabel.pack(pady=spacing+20, side=TOP)
+        Progress_Bar.pack_forget()
+        imgLabel.pack_forget()
 
 # Renderizacion de componentes de "Acerca de"
 
@@ -208,6 +209,7 @@ about_btn = Button(menu_frame, text="Acerca de", command=about,
 about_btn.pack(pady=spacing, side=TOP)
 
 # =============== Utilities =============== #
+imgLabel = Label(menu_frame)
 loading = Label(menu_frame, text="Analizando...", font=(
     "Arial", 20), bg=bgColor, fg="white", wraplengt=500)
 registerEnd = Label(menu_frame, text="Registro exitoso", font=(

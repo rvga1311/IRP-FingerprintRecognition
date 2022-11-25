@@ -1,12 +1,12 @@
 '''
     Fingerprint Recognition - fingerprint.py
 
-    Este código representa las funcionalidades necesarias para un reconocedor 
-    de huellas digitales, siendo el objetivo principal de este proyecto de 
-    software. Este programa fue realizado usando openCV que está bajo 
-    la licencia Apache 2 (siendo está compatible con GLP V3). De esta 
-    biblioteca se usaron las funciones principales de SIFT para extraer 
-    escalares invariantes y FLANN para obtener los vecinos cercanos.
+    Este código representa las funcionalidades necesarias para un reconocedor 
+    de huellas digitales, siendo el objetivo principal de este proyecto de 
+    software. Este programa fue realizado usando openCV que está bajo 
+    la licencia Apache 2 (siendo está compatible con GLP V3). De esta 
+    biblioteca se usaron las funciones principales de SIFT para extraer 
+    escalares invariantes y FLANN para obtener los vecinos cercanos.
 
     Para fines de privacidad y seguridad personal, no se ha incluido las huellas dactilares de los usuarios
     que se usaron durante la realizacion de este proyecto.
@@ -44,9 +44,10 @@ import os
 def fingerprintRecognition(imgToRecognize, imgToCompare):
     sift = cv2.SIFT_create()
 
-    keyPointsImg1 = sift.detect(imgToRecognize, None)
-    keyPointsImg1, descriptorsImg1 = sift.compute(
-        imgToRecognize, keyPointsImg1)
+    keyPointsImg1, descriptorsImg1 = sift.detectAndCompute(imgToRecognize, None)
+    # keyPointsImg1 = sift.detect(imgToRecognize, None)
+    # keyPointsImg1, descriptorsImg1 = sift.compute(
+    #     imgToRecognize, keyPointsImg1)
 
     matchesResult = cv2.FlannBasedMatcher(dict(algorithm=1, trees=10), {}).knnMatch(descriptorsImg1, imgToCompare[0], k=2)
 
@@ -83,6 +84,7 @@ def FingerprintMatch(file):
             bestMatch = score
             recognizedUser = users.split('_')[0]
 
+        # print(f'User: {users.split("_")[0]} - Score: {score}')
     if bestMatch >= 50:
         return recognizedUser
 
@@ -101,7 +103,7 @@ def createUser(name, fileFingerprint):
     img = cv2.imread(fileFingerprint, 0)
 
     sift = cv2.SIFT_create()
-    keyPointsImg = sift.detect(img, None)
-    keyPointsImg, descriptorsImg = sift.compute(img, keyPointsImg)
+    keyPointsImg, descriptorsImg = sift.detectAndCompute(img, None)
+    # keyPointsImg, descriptorsImg = sift.compute(img, keyPointsImg)
 
     np.savetxt(f'fingerprints/{name}_{len(keyPointsImg)}.txt', descriptorsImg)
